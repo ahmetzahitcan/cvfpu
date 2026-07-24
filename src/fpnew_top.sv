@@ -47,7 +47,10 @@ module fpnew_top #(
   input  logic                              flush_i,
   // Output signals
   output logic [WIDTH-1:0]                  result_o,
-  output fpnew_pkg::status_t                status_o,
+  // MODIFIED:
+  output fpnew_pkg::status_t[NumLanes-1:0] status_o,
+  // ORIGINAL:
+  // output fpnew_pkg::status_t                status_o,
   output TagType                            tag_o,
   // Output handshake
   output logic                              out_valid_o,
@@ -64,7 +67,10 @@ module fpnew_top #(
   // ----------------
   typedef struct packed {
     logic [WIDTH-1:0]   result;
-    fpnew_pkg::status_t status;
+    // MODIFIED:
+    fpnew_pkg::status_t[NumLanes-1:0] status;
+    // ORIGINAL:
+    // fpnew_pkg::status_t status;
     TagType             tag;
   } output_t;
 

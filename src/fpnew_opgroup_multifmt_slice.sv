@@ -54,7 +54,10 @@ module fpnew_opgroup_multifmt_slice #(
   input  logic                                    flush_i,
   // Output signals
   output logic [Width-1:0]                        result_o,
-  output fpnew_pkg::status_t                      status_o,
+  // MODIFIED:
+  output fpnew_pkg::status_t[NUM_LANES-1:0]       status_o,
+  // ORIGINAL:
+  //output fpnew_pkg::status_t                status_o,
   output logic                                    extension_bit_o,
   output TagType                                  tag_o,
   // Output handshake
@@ -508,15 +511,18 @@ or set Features.FpFmtMask to support only FP32");
   assign busy_o          = (| lane_busy);
 
   assign out_valid_o     = lane_out_valid[0]; // don't care about upper ones
-
-  // Collapse the status
-  always_comb begin : output_processing
-    // Collapse the status
-    automatic fpnew_pkg::status_t temp_status;
-    temp_status = '0;
-    for (int i = 0; i < int'(NUM_LANES); i++)
-      temp_status |= lane_status[i] & {5{lane_masks[i]}};
-    status_o = temp_status;
-  end
+  
+// MODIFIED: SIMD status
+  assign status_o = lane_status;
+// ORIGINAL:
+//  // Collapse the lane status
+//  always_comb begin : output_processing
+//    // Collapse the status
+//    automatic fpnew_pkg::status_t temp_status;
+//    temp_status = '0;
+//    for (int i = 0; i < int'(NUM_LANES); i++)
+//      temp_status |= lane_status[i] & {5{lane_masks[i]}};
+//    status_o = temp_status;
+//  end
 
 endmodule

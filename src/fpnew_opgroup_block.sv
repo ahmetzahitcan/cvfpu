@@ -52,7 +52,10 @@ module fpnew_opgroup_block #(
   input  logic                                    flush_i,
   // Output signals
   output logic [Width-1:0]                        result_o,
-  output fpnew_pkg::status_t                      status_o,
+  // MODIFIED:
+  output fpnew_pkg::status_t[NUM_LANES-1:0]       status_o,
+  // ORIGINAL:
+  // output fpnew_pkg::status_t                status_o,
   output logic                                    extension_bit_o,
   output TagType                                  tag_o,
   // Output handshake
@@ -67,7 +70,10 @@ module fpnew_opgroup_block #(
   // ----------------
   typedef struct packed {
     logic [Width-1:0]   result;
-    fpnew_pkg::status_t status;
+    // MODIFIED:
+    fpnew_pkg::status_t[NUM_LANES-1:0] status;
+    // ORIGINAL:
+    // fpnew_pkg::status_t status;
     logic               ext_bit;
     TagType             tag;
   } output_t;
